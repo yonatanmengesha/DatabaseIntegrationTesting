@@ -1,9 +1,6 @@
 package com.jotech.springmvc;
 
-import com.jotech.springmvc.models.CollegeStudent;
-import com.jotech.springmvc.models.HistoryGrade;
-import com.jotech.springmvc.models.MathGrade;
-import com.jotech.springmvc.models.ScienceGrade;
+import com.jotech.springmvc.models.*;
 import com.jotech.springmvc.repository.HistoryGradesDao;
 import com.jotech.springmvc.repository.MathGradesDao;
 import com.jotech.springmvc.repository.ScienceGradesDao;
@@ -202,6 +199,24 @@ public class StudentAngGradeServiceTest {
 
         assertEquals(0,studentService.deleteGrade(1,"literature"),
                 "no student have grade type literature");
+    }
+
+    @DisplayName("Student Information")
+    @Order(9)
+    @Test
+    public void testStudentInformation(){
+
+        GradebookCollegeStudent gradebookCollegeStudent = studentService.getStudentInformation(1);
+
+        assertNotNull(gradebookCollegeStudent);
+        assertEquals(1,gradebookCollegeStudent.getId());
+        assertEquals("Eric",gradebookCollegeStudent.getFirstname());
+        assertEquals("Roby",gradebookCollegeStudent.getLastname());
+        assertEquals("eric.roby@gmail.com",gradebookCollegeStudent.getEmailAddress());
+
+        assertTrue(gradebookCollegeStudent.getStudentGrades().getMathGradeResults().size()==1);
+        assertTrue(gradebookCollegeStudent.getStudentGrades().getScienceGradeResults().size()==1);
+        assertTrue(gradebookCollegeStudent.getStudentGrades().getHistoryGradeResults().size()==1);
     }
 
 
