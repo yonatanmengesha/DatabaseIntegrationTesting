@@ -44,4 +44,9 @@ public class StudentAndGradeService {
 
         return studentDao.findAll();
     }
+
+    public CollegeStudent createStudent(CollegeStudent collegeStudent) {
+
+       return  studentDao.save(collegeStudent);
+    }
 }

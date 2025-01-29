@@ -32,9 +32,8 @@ public class StudentAngGradeServiceTest {
 
     @BeforeEach
     public void setUpDatabase(){
-
         jdbc.execute("insert into student(firstname,lastname,email_address) " +
-                "values('Yonatan','Mengesha','yonatan.mengesha2017@gmail.com')");
+                "values('Eric','Roby','eric.roby@gmail.com')");
     }
 
     @DisplayName("Create Student")
@@ -80,12 +79,14 @@ public class StudentAngGradeServiceTest {
     @Test
     public void testGetGradeBookService(){
 
+
         Iterable<CollegeStudent> iterableCollegeStudents =  studentService.getGradeBook();
         List<CollegeStudent>  collegeStudents = new ArrayList<>();
 
         for(CollegeStudent collegeStudent : iterableCollegeStudents){
             collegeStudents.add(collegeStudent);
         }
+
 
         assertEquals(5,collegeStudents.size());
 

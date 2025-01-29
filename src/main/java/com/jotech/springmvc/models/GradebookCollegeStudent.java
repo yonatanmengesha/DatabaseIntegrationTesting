@@ -16,6 +16,12 @@ public class GradebookCollegeStudent extends CollegeStudent{
         this.id = id;
     }
 
+    public GradebookCollegeStudent(int id, String firstname, String lastname, String emailAddress) {
+
+        super(firstname, lastname, emailAddress);
+        this.id = id;
+    }
+
     public StudentGrades getStudentGrades() {
         return studentGrades;
     }
