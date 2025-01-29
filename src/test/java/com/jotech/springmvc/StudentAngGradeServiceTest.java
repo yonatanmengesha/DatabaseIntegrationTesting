@@ -218,6 +218,15 @@ public class StudentAngGradeServiceTest {
         assertTrue(gradebookCollegeStudent.getStudentGrades().getScienceGradeResults().size()==1);
         assertTrue(gradebookCollegeStudent.getStudentGrades().getHistoryGradeResults().size()==1);
     }
+    @DisplayName("Student information Return null")
+    @Order(10)
+    @Test
+    public void testStudentInformationReturnNull(){
+
+        GradebookCollegeStudent gradebookCollegeStudent = studentService.getStudentInformation(0);
+
+        assertNull(gradebookCollegeStudent);
+    }
 
 
     @AfterEach
