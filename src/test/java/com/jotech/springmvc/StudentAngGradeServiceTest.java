@@ -1,6 +1,12 @@
 package com.jotech.springmvc;
 
 import com.jotech.springmvc.models.CollegeStudent;
+import com.jotech.springmvc.models.HistoryGrade;
+import com.jotech.springmvc.models.MathGrade;
+import com.jotech.springmvc.models.ScienceGrade;
+import com.jotech.springmvc.repository.HistoryGradesDao;
+import com.jotech.springmvc.repository.MathGradesDao;
+import com.jotech.springmvc.repository.ScienceGradesDao;
 import com.jotech.springmvc.repository.StudentDao;
 import com.jotech.springmvc.service.StudentAndGradeService;
 import org.junit.jupiter.api.*;
@@ -30,10 +36,23 @@ public class StudentAngGradeServiceTest {
     @Autowired
     private StudentDao studentDao;
 
+    @Autowired
+    private MathGradesDao mathGradeDao;
+
+    @Autowired
+    private ScienceGradesDao scienceGradeDao;
+
+    @Autowired
+    private HistoryGradesDao historyGradeDao;
+
     @BeforeEach
     public void setUpDatabase(){
         jdbc.execute("insert into student(firstname,lastname,email_address) " +
                 "values('Eric','Roby','eric.roby@gmail.com')");
+
+        jdbc.execute("insert into math_grade(student_id,grade) values(1,100.00)");
+        jdbc.execute("insert into science_grade(student_id,grade) values(1,100.00)");
+        jdbc.execute("insert into history_grade(student_id,grade) values(1,100.00)");
     }
 
     @DisplayName("Create Student")
@@ -48,7 +67,7 @@ public class StudentAngGradeServiceTest {
     }
 
     @DisplayName("CheckIfNull")
-    @Order(3)
+    @Order(2)
     @Test
     public void testIsStudentNullcheck(){
 
@@ -57,7 +76,7 @@ public class StudentAngGradeServiceTest {
     }
 
     @DisplayName("DeleteStudentById")
-    @Order(4)
+    @Order(3)
     @Test
     public void testDeleteStudentByService(){
 
@@ -74,7 +93,7 @@ public class StudentAngGradeServiceTest {
     }
 
     @DisplayName("GetGradeBooksList")
-    @Order(2)
+    @Order(4)
     @Sql("/insertData.sql")
     @Test
     public void testGetGradeBookService(){
@@ -92,11 +111,68 @@ public class StudentAngGradeServiceTest {
 
     }
 
+    @DisplayName("Create Grade")
+    @Order(5)
+    @Test
+    public void testCreateGradeService(){
+
+        // Create the grade
+
+                          //For Math Grade
+        assertTrue(studentService.createGrade(80.50,1,"math"));
+
+                          //For Science  Grade
+        assertTrue(studentService.createGrade(80.50,1,"science"));
+
+                          //For History Grade
+
+        assertTrue(studentService.createGrade(80.50,1,"history"));
+        // Get all grades with student id
+                       //For Math Grade
+        Iterable<MathGrade> mathGrades = mathGradeDao.findGradeByStudentId(1);
+                      //For Science  Grade
+
+        Iterable<ScienceGrade> scienceGrades = scienceGradeDao.findGradeByStudentId(1);
+
+                     //For History Grade
+        Iterable<HistoryGrade>  historyGrades = historyGradeDao.findGradeByStudentId(1);
+
+        // Verify there is grade
+                           //For Math Grade
+        assertTrue(mathGrades.iterator().hasNext(),"Student has math Grade");
+
+                          //For Science  Grade
+
+        assertTrue(scienceGrades.iterator().hasNext(),"Student has science Grade");
+
+                         //For History Grade
+
+        assertTrue(historyGrades.iterator().hasNext());
+    }
+
+    @DisplayName("Invalid inputs Error")
+    @Order(6)
+    @Test
+    public void testCreateGradeServiceReturnFalse(){
+
+        assertFalse(studentService.createGrade(105.0,1,"math"));
+        assertFalse(studentService.createGrade(-5,1,"math"));
+        assertFalse(studentService.createGrade(80.50,2,"math"));
+        assertFalse(studentService.createGrade(80.50,1,"literature"));
+    }
+
 
     @AfterEach
     public void setUpAfterTransaction(){
 
         jdbc.execute("DELETE FROM student");
+        jdbc.execute("DELETE FROM math_grade");
+        jdbc.execute("DELETE FROM science_grade");
+        jdbc.execute("DELETE FROM history_grade");
+
         jdbc.execute("ALTER TABLE student ALTER COLUMN ID RESTART WITH 1");
+        jdbc.execute("ALTER TABLE math_grade ALTER COLUMN ID RESTART WITH 1");
+        jdbc.execute("ALTER TABLE science_grade ALTER COLUMN ID RESTART WITH 1");
+        jdbc.execute("ALTER TABLE history_grade ALTER COLUMN ID RESTART WITH 1");
     }
 }
