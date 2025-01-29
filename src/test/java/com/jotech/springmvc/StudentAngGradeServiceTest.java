@@ -17,6 +17,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -138,16 +139,20 @@ public class StudentAngGradeServiceTest {
         Iterable<HistoryGrade>  historyGrades = historyGradeDao.findGradeByStudentId(1);
 
         // Verify there is grade
+
                            //For Math Grade
         assertTrue(mathGrades.iterator().hasNext(),"Student has math Grade");
+        assertTrue( ((Collection<MathGrade>) mathGrades).size()==2,"student has math Grades");
 
                           //For Science  Grade
 
         assertTrue(scienceGrades.iterator().hasNext(),"Student has science Grade");
+        assertTrue(((Collection<ScienceGrade>) scienceGrades).size()==2,"student has science Grades");
 
                          //For History Grade
 
-        assertTrue(historyGrades.iterator().hasNext());
+        assertTrue(historyGrades.iterator().hasNext(),"student has history grade");
+        assertTrue(((Collection<HistoryGrade>) historyGrades).size()==2,"student has history grades");
     }
 
     @DisplayName("Invalid inputs Error")
@@ -159,6 +164,31 @@ public class StudentAngGradeServiceTest {
         assertFalse(studentService.createGrade(-5,1,"math"));
         assertFalse(studentService.createGrade(80.50,2,"math"));
         assertFalse(studentService.createGrade(80.50,1,"literature"));
+    }
+
+    @DisplayName("Delete grade")
+    @Order(7)
+    @Test
+    public void testDeleteGradeService(){
+
+        assertEquals(1,studentService.deleteGrade(1,"math"),
+                "returns student id after delete");
+        assertEquals(1,studentService.deleteGrade(1,"science"),
+                "returns student id after delete");
+        assertEquals(1,studentService.deleteGrade(1,"history"),
+                "returns student id after delete");
+    }
+
+    @DisplayName("Invalid zero id")
+    @Order(8)
+    @Test
+    public void testDeleteGradeServiceReturnStudentIdOfZero(){
+
+        assertEquals(0,studentService.deleteGrade(0,"math"),
+                "no student have 0 id");
+
+        assertEquals(0,studentService.deleteGrade(1,"literature"),
+                "no student have grade type literature");
     }
 
 
