@@ -2,6 +2,7 @@ package com.jotech.springmvc.controller;
 
 import com.jotech.springmvc.models.CollegeStudent;
 import com.jotech.springmvc.models.Gradebook;
+import com.jotech.springmvc.models.GradebookCollegeStudent;
 import com.jotech.springmvc.service.StudentAndGradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,9 +57,54 @@ public class GradebookController {
 
 	}
 
-	@GetMapping("/studentInformation/{id}")
+	  @GetMapping("/studentInformation/{id}")
 		public String studentInformation(@PathVariable int id, Model m) {
+
+		if(!studentService.checkIfStudentIsNull(id)){
+			return "error";
+		}
+
+		studentService.configuresStudentInformationModel(id,m);
+
 		return "studentInformation";
 		}
+
+
+		@PostMapping( value = "/grades")
+	    public String createGrade(@RequestParam("grade") double grade,
+								  @RequestParam("gradeType") String studentType,
+								  @RequestParam("studentId") int studentId,
+								  Model m){
+
+
+		if(!studentService.checkIfStudentIsNull(studentId)){
+			return "error";
+		}
+
+		boolean success = studentService.createGrade(grade,studentId,studentType);
+
+		if(!success){
+			return "error";
+		}
+
+
+		studentService.configuresStudentInformationModel(studentId,m);
+
+			return "studentInformation";
+		}
+
+		@GetMapping("/grades/{id}/{gradeType}")
+		public String deleteGrade(@PathVariable int id, @PathVariable String gradeType,Model m){
+
+         int studentId = studentService.deleteGrade(id,gradeType);
+
+		 if(studentId==0){
+			 return "error";
+		 }
+		 studentService.configuresStudentInformationModel(studentId,m);
+		return "studentInformation";
+
+		}
+
 
 }

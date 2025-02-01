@@ -1,0 +1,17 @@
+com\jotech\springmvc\models\MathGrade.class
+com\jotech\springmvc\models\HistoryGrade.class
+com\jotech\springmvc\models\ScienceGrade.class
+com\jotech\springmvc\service\StudentAndGradeService.class
+com\jotech\springmvc\repository\MathGradesDao.class
+com\jotech\springmvc\models\CollegeStudent.class
+com\jotech\springmvc\models\GradebookCollegeStudent.class
+com\jotech\springmvc\repository\HistoryGradesDao.class
+com\jotech\springmvc\repository\ScienceGradesDao.class
+com\jotech\springmvc\ServletInitializer.class
+com\jotech\springmvc\MvcTestingExampleApplication.class
+com\jotech\springmvc\models\Gradebook.class
+com\jotech\springmvc\models\Student.class
+com\jotech\springmvc\controller\GradebookController.class
+com\jotech\springmvc\models\StudentGrades.class
+com\jotech\springmvc\repository\StudentDao.class
+com\jotech\springmvc\models\Grade.class
