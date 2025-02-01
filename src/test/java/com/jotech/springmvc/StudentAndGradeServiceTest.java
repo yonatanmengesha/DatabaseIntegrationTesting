@@ -21,10 +21,10 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestPropertySource("/application.properties")
+@TestPropertySource("/application-test.properties")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
-public class StudentAngGradeServiceTest {
+public class StudentAndGradeServiceTest {
 
     @Autowired
     private JdbcTemplate jdbc;
